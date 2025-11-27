@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import SearchBar from './SearchBar';
-const Navbar = ({ query, setQuery }) => {
+const Navbar = () => {
     return (
         <header className='bg-white dark:bg-gray-900'>
             <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
@@ -8,7 +7,7 @@ const Navbar = ({ query, setQuery }) => {
                     <div className='flex-1 md:flex md:items-center md:gap-12'>
                         <NavLink
                             className='block text-teal-600 dark:text-teal-300'
-                            to='#'
+                            to='/'
                         >
                             <span className='sr-only'>Home</span>
                             <svg
@@ -39,9 +38,7 @@ const Navbar = ({ query, setQuery }) => {
                             </ul> */}
                         </nav>
 
-                        <div className='flex items-center gap-4'>
-                            <SearchBar query={query} setQuery={setQuery} />
-                        </div>
+                        <div className='flex items-center gap-4'></div>
                     </div>
                 </div>
             </div>
