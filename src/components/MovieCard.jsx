@@ -1,36 +1,42 @@
 import { Link } from 'react-router-dom';
-export default function MovieCard(movie) {
-    const {
-        Title: title,
-        Year: year,
-        imdbID,
 
-        Poster: poster,
-    } = movie;
+export default function MovieCard(movie) {
+    const { title, release_date, genre_ids, id, vote_average, poster_path } =
+        movie;
+
+    const ratingValue = vote_average?.toFixed(1);
+    const year = release_date ? release_date.slice(0, 4) : '—';
+    const posterURL = poster_path
+        ? `https://image.tmdb.org/t/p/w500${poster_path}`
+        : 'https://placehold.co/500x750/orange/orange';
+
     return (
-        <div>
-            <Link to={`/movie/${imdbID}`} className='block'>
+        <Link
+            to={`/movie/${id}`}
+            state={{
+                movie,
+            }}
+            className='bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition transform hover:scale-[1.02] cursor-pointer'
+        >
+            {/* Poster */}
+            <div className='relative aspect-[2/3] w-full overflow-hidden'>
                 <img
+                    src={posterURL}
                     alt={title}
-                    src={poster}
-                    className='h-56 w-full rounded-tr-3xl rounded-bl-3xl object-cover sm:h-64 lg:h-72'
+                    className='w-full h-full object-cover'
                 />
 
-                <div className='mt-4 sm:flex sm:items-center sm:justify-center sm:gap-4'>
-                    <strong className='font-medium'>{title}</strong>
-
-                    <span className='hidden sm:block sm:h-px sm:w-8 sm:bg-yellow-500'></span>
-
-                    <p className='mt-0.5 opacity-50 sm:mt-0'>{year}</p>
+                {/* Rating Badge */}
+                <div className='absolute top-2 right-2 bg-yellow-400 text-gray-900 text-sm font-semibold px-2 py-1 rounded-md shadow'>
+                    {ratingValue}
                 </div>
-            </Link>
-        </div>
+            </div>
+
+            {/* Text Content */}
+            <div className='p-4 space-y-1'>
+                <h3 className='text-lg font-semibold line-clamp-1'>{title}</h3>
+                <p className='text-sm text-gray-500'>{year}</p>
+            </div>
+        </Link>
     );
 }
-/*
-Genre: genre,
-        Runtime: runtime,
-        Plot: plot,
-        Actors: actors,
-        Ratings: rating,
-*/

@@ -1,61 +1,14 @@
-import { useState, useEffect } from 'react';
 import Hero from '../components/Hero';
 import SearchBar from '../components/SearchBar';
 import MovieList from '../components/MovieList';
 import Loader from '../components/Loader';
 import Error from '../components/Error';
+import { useMovie } from '../utils/useMovie.js';
 
-const KEY = 'cb1f27af';
+const KEY = '8f73159d5a230921c187dc2da836f1c6';
 
 const HomePage = () => {
-    const [movies, setMovies] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [query, setQuery] = useState('');
-
-    useEffect(() => {
-        if (query.trim().length < 3) {
-            setMovies([]);
-            setError(false);
-            return;
-        }
-
-        const controller = new AbortController();
-
-        const fetchMovies = async () => {
-            try {
-                setLoading(true);
-                setError(false);
-
-                const res = await fetch(
-                    `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-                    { signal: controller.signal }
-                );
-                if (!res.ok) {
-                    setError(true);
-                    return;
-                }
-                const data = await res.json();
-
-                if (data.Response === 'False') {
-                    setMovies([]);
-                    return;
-                }
-                setMovies(data.Search || []);
-                // console.log(data.Search);
-            } catch (err) {
-                console.log('Error fetching movies!', err);
-                setError(true);
-            } finally {
-                setLoading(false);
-            }
-        };
-        const timer = setTimeout(fetchMovies, 1500);
-        return () => {
-            clearTimeout(timer);
-            controller.abort();
-        };
-    }, [query]);
+    const { query, setQuery, error, loading, movies } = useMovie(KEY);
 
     // rendering
     return (
