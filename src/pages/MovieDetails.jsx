@@ -9,24 +9,42 @@ const MovieDetails = () => {
     } else {
         console.log(movie);
     }
+
+    const {
+        title,
+        release_date,
+        genre_ids,
+        overview,
+        vote_average,
+        poster_path,
+    } = movie;
+    const ratingValue = vote_average?.toFixed(1);
+    const year = release_date ? release_date.slice(0, 4) : '—';
+    const posterURL = poster_path
+        ? `https://image.tmdb.org/t/p/w500${poster_path}`
+        : 'https://placehold.co/500x750/orange/orange';
+
     return (
-        <div className='min-h-screen flex flex-col items-center'>
+        <div className='mx-auto max-w-7xl min-h-screen flex flex-col items-center'>
             <div>
                 <Link to='/'>
                     ⬅️ <span>Back to List</span>
                 </Link>
             </div>
-            <div>
+            <div className='flex flex-col justify-start items-start'>
                 <p>
-                    Image: {movie.posterURL}
-                    Title: {movie.title}
+                    <img src={posterURL} alt={title} />
                 </p>
-                <p className='flex'>{movie.year}</p>
+                <p>{title}</p>
+                <p>{year}</p>
                 <p>
-                    {movie.genre_ids}
-                    {movie.overview}
-                    {movie.ratingValue}
+                    Genres:{' '}
+                    {genre_ids.map((genre, index) => (
+                        <span key={index}>{genre} </span>
+                    ))}
                 </p>
+                <p>Overview: {overview}</p>
+                <p>Rating: {ratingValue}</p>
                 <p>movie ID: {id}</p>
             </div>
         </div>

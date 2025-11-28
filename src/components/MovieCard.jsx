@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 
 export default function MovieCard(movie) {
-    const { title, release_date, genre_ids, id, vote_average, poster_path } =
-        movie;
+    const { title, release_date, id, vote_average, poster_path } = movie;
 
     const ratingValue = vote_average?.toFixed(1);
     const year = release_date ? release_date.slice(0, 4) : '—';
