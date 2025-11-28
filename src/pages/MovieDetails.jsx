@@ -4,12 +4,6 @@ const MovieDetails = () => {
     const { id } = useParams();
     const { state } = useLocation();
     const { movie } = state || {};
-    if (!movie) {
-        return <Navigate to='*' />;
-    } else {
-        console.log(movie);
-    }
-
     const {
         title,
         release_date,
@@ -18,11 +12,18 @@ const MovieDetails = () => {
         vote_average,
         poster_path,
     } = movie;
+
     const ratingValue = vote_average?.toFixed(1);
     const year = release_date ? release_date.slice(0, 4) : '—';
     const posterURL = poster_path
         ? `https://image.tmdb.org/t/p/w500${poster_path}`
         : 'https://placehold.co/500x750/orange/orange';
+
+    if (!movie) {
+        return <Navigate to='*' />;
+    } else {
+        console.log(movie);
+    }
 
     return (
         <div className='mx-auto max-w-7xl min-h-screen flex flex-col items-center'>
@@ -35,8 +36,10 @@ const MovieDetails = () => {
                 <p>
                     <img src={posterURL} alt={title} />
                 </p>
-                <p>{title}</p>
-                <p>{year}</p>
+                <p>
+                    {title} - {year}
+                </p>
+
                 <p>
                     Genres:{' '}
                     {genre_ids.map((genre, index) => (
