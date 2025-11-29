@@ -1,9 +1,29 @@
-import { useParams, useLocation, Link, Navigate } from 'react-router-dom';
+import {
+    useParams,
+    useNavigate,
+    useLocation,
+    Navigate,
+} from 'react-router-dom';
+import { useMovieDetails } from '../utils/useMovieDetails.js';
+import Error from '../components/Error.jsx';
+import Loader from '../components/Loader.jsx';
+
+const KEY = '8f73159d5a230921c187dc2da836f1c6';
 
 const MovieDetails = () => {
     const { id } = useParams();
     const { state } = useLocation();
     const { movie } = state || {};
+
+    const { details, loading, error } = useMovieDetails(id);
+
+    const navigate = useNavigate();
+
+    const cast = details?.credits?.cast?.slice(0, 6) ?? []; // 'cast' is an array
+    // console.log(cast);
+
+    if (!movie) return <Navigate to='*' />;
+
     const {
         title,
         release_date,
@@ -16,12 +36,16 @@ const MovieDetails = () => {
 
     const ratingValue = vote_average?.toFixed(1);
     const year = release_date ? release_date.slice(0, 4) : '—';
+
     const posterURL = poster_path
         ? `https://image.tmdb.org/t/p/w500${poster_path}`
         : 'https://placehold.co/500x750/orange/orange';
-    const backdropURL = `https://image.tmdb.org/t/p/original${backdrop_path}`;
 
-    const filmGenres = {
+    const backdropURL = backdrop_path
+        ? `https://image.tmdb.org/t/p/original${backdrop_path}`
+        : '';
+
+    const GENRES = {
         28: 'Action',
         12: 'Adventure',
         16: 'Animation',
@@ -42,51 +66,136 @@ const MovieDetails = () => {
         10752: 'War',
         37: 'Western',
     };
+    const genreNames = genre_ids.map((gid) => GENRES[gid]).join(' • ');
 
-    if (!movie) {
-        return <Navigate to='*' />;
-    } else {
-        console.log(movie);
-    }
+    const director =
+        details?.credits?.crew?.find((dir) => dir.job === 'Director')?.name ||
+        '-';
+
+    const videoURL =
+        details?.videos?.results?.find((vid) => vid.type === 'Trailer')?.key ||
+        '-';
 
     return (
         <>
-            <div
-                className='h-64 w-full bg-cover bg-center opacity-40'
-                style={{ backgroundImage: `url(${backdropURL})` }}
-            >
-                {' '}
-            </div>
-            <div className='max-w-6xl mx-auto -mt-24'>
-                <div>
-                    <Link to='/'>
-                        ⬅️ <span>Back to List</span>
-                    </Link>
-                </div>
-                <div className='grid gap-10 lg:grid-cols-3'>
-                    <div className='relative aspect-[2/3] w-full rounded-xl overflow-hidden shadow-lg'>
-                        <img src={posterURL} alt={title} />
+            {loading && <Loader loading={loading} />}
+            {error && <Error />}
+            {!loading && (
+                <>
+                    <div className='relative h-72 w-full overflow-hidden'>
+                        {backdropURL && (
+                            <img
+                                src={backdropURL}
+                                alt={title}
+                                className='w-full h-full object-cover opacity-60'
+                            />
+                        )}
+                        <div className='absolute inset-0 bg-black/40' />
                     </div>
-                    <div className='flex flex-col'>
-                        <h1 className='flex items-end gap-3'>
-                            <span className='text-4xl'>{title}</span>
-                            <span className='text-lg'>{year}</span>
-                        </h1>
-                        <div className='flex flex-col'>
-                            <p>
-                                {genre_ids
-                                    .map((id) => filmGenres[id])
-                                    .join(' • ')}
-                            </p>
-                            <p>{overview}</p>
-                            <p>movie ID: {id}</p>
+
+                    <div className='max-w-6xl mx-auto px-4 pb-24 -mt-10 relative'>
+                        <div className='-mt-14 relative z-20'>
+                            <button
+                                onClick={() => navigate(-1)}
+                                className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/95 hover:bg-white border border-gray-300 text-sm text-gray-800 shadow-sm transition cursor-pointer'
+                            >
+                                ← Back to results
+                            </button>
+                        </div>
+
+                        <div className='grid gap-12 md:grid-cols-2 lg:grid-cols-[300px_minmax(0,1fr)_260px] relative z-10 lg:mt-24'>
+                            {/* POSTER SECTION */}
+                            <div className='md:col-span-2 lg:col-span-1 flex justify-center lg:block'>
+                                <div
+                                    className='relative rounded-2xl overflow-hidden shadow-xl 
+                                       w-full max-w-xs sm:max-w-sm 
+                                       lg:max-w-none lg:-mt-14'
+                                >
+                                    <img
+                                        src={posterURL}
+                                        alt={title}
+                                        className='w-full h-auto object-cover'
+                                    />
+
+                                    <span className='absolute top-2 right-2 bg-yellow-400 text-gray-900 px-3 py-1 rounded-lg shadow font-bold text-sm'>
+                                        {ratingValue}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* OVERVIEW SECTION */}
+                            <div className='lg:col-span-1 text-black space-y-4'>
+                                <h1 className='flex items-end gap-3 text-3xl sm:text-4xl font-normal leading-tight mb-1'>
+                                    <span>{title}</span>
+                                    <span className='text-lg sm:text-xl text-gray-600'>
+                                        {year}
+                                    </span>
+                                </h1>
+                                <p className='text-sm text-gray-600'>
+                                    {genreNames}
+                                </p>
+                                <p className='text-sm text-gray-600'>
+                                    Directed by {director}
+                                </p>
+
+                                <h2 className='text-lg font-semibold mt-6 mb-1'>
+                                    Overview
+                                </h2>
+                                <p className='text-gray-700 leading-relaxed max-w-prose'>
+                                    {overview}
+                                </p>
+                                <h2 className='text-lg font-semibold mt-6 mb-1'>
+                                    Cast
+                                </h2>
+
+                                <div className='text-gray-700 mt-2'>
+                                    {cast.map((act, index) => (
+                                        <span
+                                            className='inline-block rounded-full bg-slate-900/85 px-3 py-1 text-white text-sm mr-2 mb-2'
+                                            key={act.cast_id ?? act.id ?? index}
+                                        >
+                                            {act.name}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                            {/* RATINGS SECTION */}
+                            <div className='lg:col-span-1 bg-slate-900/85 text-slate-100 rounded-2xl p-6 shadow-xl self-start'>
+                                <h3 className='text-xs uppercase tracking-wider text-slate-300'>
+                                    TMDB Rating
+                                </h3>
+
+                                <p className='text-5xl font-bold mt-2'>
+                                    {ratingValue}
+                                </p>
+
+                                <p className='text-xs text-slate-300 mt-1'>
+                                    Average user score
+                                </p>
+
+                                <div className='h-px bg-slate-700/60 mt-6 mb-4' />
+
+                                {videoURL && (
+                                    <div className='mt-2 mb-4'>
+                                        <a
+                                            href={`https://www.youtube.com/watch?v=${videoURL}`}
+                                            target='_blank'
+                                            rel='noreferrer'
+                                            className='inline-flex items-center justify-center rounded-full bg-[#f3143c] hover:bg-[#d91235] px-4 py-1.5 text-sm font-medium text-white transition'
+                                        >
+                                            <span>YouTube Trailer</span>
+                                        </a>
+                                    </div>
+                                )}
+
+                                <p className='text-xs text-slate-500'>
+                                    Movie ID: {id}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <p>Rating: {ratingValue}</p>
-                    </div>
-                </div>
-            </div>
+                </>
+            )}
         </>
     );
 };

@@ -10,15 +10,24 @@ const KEY = '8f73159d5a230921c187dc2da836f1c6';
 const HomePage = () => {
     const { query, setQuery, error, loading, movies } = useMovie(KEY);
 
-    // rendering
+    const showHero = query.trim().length < 3;
+
     return (
-        <div className='min-h-screen'>
-            <SearchBar query={query} setQuery={setQuery} />
-            {query.length < 3 && <Hero />}
-            {query.length >= 3 && loading && <Loader loading={loading} />}
-            {query.length >= 3 && error && <Error />}
-            {query.length >= 3 && !loading && (
-                <MovieList loading={loading} movies={movies} />
+        <div className='min-h-[calc(100vh-8rem)] flex flex-col'>
+            {showHero ? (
+                // Landing: Hero με το search μέσα
+                <Hero query={query} setQuery={setQuery} />
+            ) : (
+                // Results: search bar πάνω + grid από κάτω
+                <>
+                    <SearchBar query={query} setQuery={setQuery} />
+
+                    <div className='flex-1 px-4 pb-8'>
+                        {loading && <Loader loading={loading} />}
+                        {error && <Error />}
+                        {!loading && !error && <MovieList movies={movies} />}
+                    </div>
+                </>
             )}
         </div>
     );

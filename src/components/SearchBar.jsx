@@ -1,37 +1,24 @@
-const SearchBar = ({ query, setQuery }) => {
-    return (
-        <div className='relative search-bar'>
-            <input
-                type='text'
-                id='Search'
-                className='mt-0.5 w-full rounded border-gray-300 pe-10 shadow-sm sm:text-sm'
-                placeholder='search for a movie...'
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-            />
+import { FiSearch } from 'react-icons/fi';
 
-            <span className='absolute inset-y-0 right-2 grid w-8 place-content-center'>
-                <button
-                    type='button'
-                    aria-label='Submit'
-                    className='rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100 cursor-pointer'
-                >
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth='1.5'
-                        stroke='currentColor'
-                        className='size-4'
-                    >
-                        <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z'
-                        ></path>
-                    </svg>
-                </button>
-            </span>
+const SearchBar = ({ query, setQuery, variant = 'default' }) => {
+    // ίδιο input, αλλά λίγο διαφορετικό wrapper αν είμαστε μέσα στο Hero
+    const wrapperClass =
+        variant === 'hero'
+            ? 'w-full flex justify-center'
+            : 'w-full flex justify-center px-4 pt-4';
+
+    return (
+        <div className={wrapperClass}>
+            <div className='w-full max-w-xl flex items-center gap-2 rounded-full border border-gray-200 bg-white/95 shadow-sm px-4 py-2 text-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500'>
+                <FiSearch className='text-gray-400' />
+                <input
+                    type='text'
+                    placeholder='Search for a movie...'
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className='w-full bg-transparent outline-none placeholder:text-gray-400'
+                />
+            </div>
         </div>
     );
 };

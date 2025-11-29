@@ -1,12 +1,14 @@
 const Footer = () => {
     return (
-        <footer className='footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4 static bottom-0 left-0 right-0 flex justify-center bg-grey-100'>
-            <aside>
-                <p>
-                    Copyright © {new Date().getFullYear()} - All right reserved
-                    by Alkis
-                </p>
-            </aside>
+        <footer className='w-full bg-base-300 text-base-content'>
+            <div className='footer footer-center sm:footer-horizontal p-4 max-w-6xl mx-auto'>
+                <aside>
+                    <p>
+                        Copyright © {new Date().getFullYear()} - All right
+                        reserved by Alkis
+                    </p>
+                </aside>
+            </div>
         </footer>
     );
 };
