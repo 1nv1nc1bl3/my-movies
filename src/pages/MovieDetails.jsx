@@ -160,7 +160,7 @@ const MovieDetails = () => {
                                 </div>
                             </div>
                             {/* RATINGS SECTION */}
-                            <div className='lg:col-span-1 bg-slate-900/85 text-slate-100 rounded-2xl p-6 shadow-xl self-start'>
+                            <div className='lg:col-span-1 bg-slate-900 text-slate-100 rounded-2xl p-6 shadow-xl self-start'>
                                 <h3 className='text-xs uppercase tracking-wider text-slate-300'>
                                     TMDB Rating
                                 </h3>
