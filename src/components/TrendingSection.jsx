@@ -9,6 +9,10 @@ const TrendingSection = () => {
     const { trending, loadingTrending, errorTrending } = useTrending(period);
     const top4 = (trending ?? []).slice(0, 4);
 
+    const activeClass = (isActive) =>
+        period === isActive
+            ? 'bg-slate-900 text-white'
+            : 'border border-slate-300 hover:bg-slate-100';
     return (
         <>
             {loadingTrending && <Loader />}
@@ -31,16 +35,24 @@ const TrendingSection = () => {
                         <div className='inline-flex items-center gap-2 rounded-full bg-slate-100 p-1 text-xs sm:text-sm'>
                             <button
                                 onClick={() => setPeriod('day')}
-                                className='day-button px-3 py-1 rounded-full font-medium transition border border-transparent hover:bg-white'
+                                className={`day-button px-3 py-1 rounded-full ${activeClass(
+                                    'day'
+                                )}`}
                             >
                                 Today
                             </button>
                             <button
                                 onClick={() => setPeriod('week')}
-                                className='week-button px-3 py-1 rounded-full font-medium transition border border-transparent hover:bg-white'
+                                className={`week-button px-3 py-1 rounded-full ${activeClass(
+                                    'week'
+                                )} `}
                             >
                                 This week
                             </button>
+                            {/*
+active:  px-3 py-1 rounded-full bg-slate-900 text-white
+not active: px-3 py-1 rounded-full border border-slate-300 hover:bg-slate-100
+*/}
                         </div>
                     </div>
 
@@ -71,8 +83,3 @@ const TrendingSection = () => {
 };
 
 export default TrendingSection;
-
-/*
-active:  px-3 py-1 rounded-full bg-slate-900 text-white
-not active: px-3 py-1 rounded-full border border-slate-300 hover:bg-slate-100
-*/
