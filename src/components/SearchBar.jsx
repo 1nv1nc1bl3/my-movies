@@ -5,10 +5,10 @@ const SearchBar = ({ query, setQuery, variant = 'default' }) => {
     const wrapperClass =
         variant === 'hero'
             ? 'w-full flex justify-center'
-            : 'w-full flex justify-center px-4 pt-4';
+            : 'w-full flex justify-center px-4';
 
     return (
-        <div className={wrapperClass}>
+        <div className={`${wrapperClass}`}>
             <div className='w-full max-w-xl flex items-center gap-2 rounded-full border border-gray-200 bg-white/95 shadow-sm px-4 py-2 text-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500'>
                 <FiSearch className='text-gray-400' />
                 <input

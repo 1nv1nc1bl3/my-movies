@@ -19,7 +19,7 @@ const MovieDetails = () => {
 
     const navigate = useNavigate();
 
-    const cast = details?.credits?.cast?.slice(0, 6) ?? []; // 'cast' is an array
+    const cast = details?.credits?.cast?.slice(0, 10) ?? []; // 'cast' is an array
     // console.log(cast);
 
     if (!movie) return <Navigate to='*' />;
@@ -45,6 +45,30 @@ const MovieDetails = () => {
         ? `https://image.tmdb.org/t/p/original${backdrop_path}`
         : '';
 
+    const director =
+        details?.credits?.crew?.find((dir) => dir.job === 'Director')?.name ||
+        '-';
+
+    const videoURL =
+        details?.videos?.results?.find((vid) => vid.type === 'Trailer')?.key ||
+        '-';
+
+    // const actualRuntime = `${Math.floor(details?.runtime / 60)}h ${
+    //     details?.runtime % 60
+    // }m`;
+
+    const formattedRuntime = (runtime) => {
+        if (!runtime) return '';
+        const hours = Math.floor(runtime / 60);
+        const minutes = runtime % 60;
+
+        if (!hours) return `${minutes}m`;
+        if (!minutes) return `${hours}h`;
+        return `${hours}h ${minutes}m`;
+    };
+
+    const actualRuntime = formattedRuntime(details?.runtime);
+
     const GENRES = {
         28: 'Action',
         12: 'Adventure',
@@ -67,14 +91,6 @@ const MovieDetails = () => {
         37: 'Western',
     };
     const genreNames = genre_ids.map((gid) => GENRES[gid]).join(' • ');
-
-    const director =
-        details?.credits?.crew?.find((dir) => dir.job === 'Director')?.name ||
-        '-';
-
-    const videoURL =
-        details?.videos?.results?.find((vid) => vid.type === 'Trailer')?.key ||
-        '-';
 
     return (
         <>
@@ -99,7 +115,7 @@ const MovieDetails = () => {
                                 onClick={() => navigate(-1)}
                                 className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/95 hover:bg-white border border-gray-300 text-sm text-gray-800 shadow-sm transition cursor-pointer'
                             >
-                                ← Back to results
+                                ← Back
                             </button>
                         </div>
 
@@ -125,15 +141,20 @@ const MovieDetails = () => {
 
                             {/* OVERVIEW SECTION */}
                             <div className='lg:col-span-1 text-black space-y-4'>
-                                <h1 className='flex items-end gap-3 text-3xl sm:text-4xl font-normal leading-tight mb-1'>
+                                <h1 className='flex justify-start items-end gap-3 text-3xl sm:text-4xl font-normal leading-10 mb-1'>
                                     <span>{title}</span>
-                                    <span className='text-lg sm:text-xl text-gray-600'>
+                                    <span className='text-xl sm:text-2xl text-gray-600'>
                                         {year}
                                     </span>
                                 </h1>
-                                <p className='text-sm text-gray-600'>
-                                    {genreNames}
-                                </p>
+                                <div className='flex justify-between items-center'>
+                                    <p className='text-sm text-gray-600'>
+                                        {genreNames}
+                                    </p>
+                                    <p className='text-lg sm:text-xl text-gray-600'>
+                                        {actualRuntime}
+                                    </p>
+                                </div>
                                 <p className='text-sm text-gray-600'>
                                     Directed by {director}
                                 </p>
@@ -192,6 +213,7 @@ const MovieDetails = () => {
                                     Movie ID: {id}
                                 </p>
                             </div>
+                            <p className='text-gray-700 leading-relaxed max-w-prose'></p>
                         </div>
                     </div>
                 </>

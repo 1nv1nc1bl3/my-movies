@@ -3,6 +3,7 @@ import AppLayout from './layouts/AppLayout';
 import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
 import MovieDetails from './pages/MovieDetails';
+import FavoritesPage from './pages/FavoritesPage';
 
 function App() {
     const router = createBrowserRouter([
@@ -17,6 +18,10 @@ function App() {
                 {
                     path: 'movie/:id',
                     element: <MovieDetails />,
+                },
+                {
+                    path: 'favorites',
+                    element: <FavoritesPage />,
                 },
             ],
         },

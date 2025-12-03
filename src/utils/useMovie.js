@@ -30,10 +30,6 @@ export function useMovie(KEY) {
                 }
                 const data = await res.json();
 
-                // if (data.Response === 'False') {
-                //     setMovies([]);
-                //     return;
-                // }
                 setMovies(data.results || []);
                 // console.log(data.results);
             } catch (err) {
