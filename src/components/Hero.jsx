@@ -22,7 +22,8 @@ const Hero = () => {
                     Browse thousands of films, check ratings at a glance, and
                     dive into details with one click. Search by title, explore
                     what's trending this week, and build your own list of
-                    must-watch movies with CineMate.
+                    must-watch movies with{' '}
+                    <span className='text-teal-300'>CineMate</span>.
                 </p>
             </div>
         </section>
