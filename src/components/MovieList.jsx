@@ -1,7 +1,6 @@
-import Loader from './Loader';
 import MovieCard from './MovieCard';
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies, favorites, setFavorites }) => {
     return (
         <div
             className='
@@ -16,7 +15,12 @@ const MovieList = ({ movies }) => {
             '
         >
             {movies?.map((movie) => (
-                <MovieCard key={movie.id} {...movie} />
+                <MovieCard
+                    key={movie.id}
+                    favorites={favorites}
+                    setFavorites={setFavorites}
+                    {...movie}
+                />
             ))}
         </div>
     );

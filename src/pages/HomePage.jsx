@@ -9,7 +9,7 @@ import { useMovie } from '../utils/useMovie.js';
 
 const KEY = '8f73159d5a230921c187dc2da836f1c6';
 
-const HomePage = () => {
+const HomePage = ({ favorites, setFavorites }) => {
     const { query, setQuery, error, loading, movies } = useMovie(KEY);
 
     const showLanding = query.trim().length < 3;
@@ -29,14 +29,23 @@ const HomePage = () => {
                     <Hero />
 
                     {/* TRENDING SECTION */}
-                    <TrendingSection />
+                    <TrendingSection
+                        favorites={favorites}
+                        setFavorites={setFavorites}
+                    />
                 </>
             ) : (
                 // SEARCH RESULTS MODE
                 <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
                     {loading && <Loader loading={loading} />}
                     {error && <Error />}
-                    {!loading && !error && <MovieList movies={movies} />}
+                    {!loading && !error && (
+                        <MovieList
+                            favorites={favorites}
+                            setFavorites={setFavorites}
+                            movies={movies}
+                        />
+                    )}
                 </section>
             )}
         </div>

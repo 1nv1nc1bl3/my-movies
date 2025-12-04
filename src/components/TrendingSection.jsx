@@ -4,7 +4,7 @@ import MovieCard from './MovieCard';
 import Loader from './Loader';
 import Error from './Error';
 
-const TrendingSection = () => {
+const TrendingSection = ({ favorites, setFavorites }) => {
     const [period, setPeriod] = useState('day');
     const { trending, loadingTrending, errorTrending } = useTrending(period);
     const top4 = (trending ?? []).slice(0, 4);
@@ -64,7 +64,11 @@ not active: px-3 py-1 rounded-full border border-slate-300 hover:bg-slate-100
                                     key={movie.id}
                                     className='min-w-[60%] snap-center'
                                 >
-                                    <MovieCard {...movie} />
+                                    <MovieCard
+                                        {...movie}
+                                        favorites={favorites}
+                                        setFavorites={setFavorites}
+                                    />
                                 </div>
                             ))}
                         </div>
