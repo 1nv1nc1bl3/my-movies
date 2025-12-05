@@ -9,7 +9,7 @@ const SearchBar = ({ query, setQuery, variant = 'default' }) => {
 
     return (
         <div className={`${wrapperClass}`}>
-            <div className='w-full max-w-xl flex items-center gap-2 rounded-full border border-gray-200 bg-white/95 shadow-sm px-4 py-2 text-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500'>
+            <div className='w-full max-w-xl flex items-center gap-2 rounded-full border border-gray-200 bg-white/95 shadow-sm px-4 py-2 text-sm focus-within:ring-2 focus-within:ring-teal-500 focus-within:border-teal-500'>
                 <FiSearch className='text-gray-400' />
                 <input
                     type='text'
