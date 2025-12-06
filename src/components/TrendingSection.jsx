@@ -4,7 +4,7 @@ import MovieCard from './MovieCard';
 import Loader from './Loader';
 import Error from './Error';
 
-const TrendingSection = ({ favorites, setFavorites }) => {
+const TrendingSection = ({ favorites, toggleFavorite }) => {
     const [period, setPeriod] = useState('day');
     const { trending, loadingTrending, errorTrending } = useTrending(period);
     const top4 = (trending ?? []).slice(0, 4);
@@ -49,10 +49,6 @@ const TrendingSection = ({ favorites, setFavorites }) => {
                             >
                                 This week
                             </button>
-                            {/*
-active:  px-3 py-1 rounded-full bg-slate-900 text-white
-not active: px-3 py-1 rounded-full border border-slate-300 hover:bg-slate-100
-*/}
                         </div>
                     </div>
 
@@ -67,7 +63,7 @@ not active: px-3 py-1 rounded-full border border-slate-300 hover:bg-slate-100
                                     <MovieCard
                                         {...movie}
                                         favorites={favorites}
-                                        setFavorites={setFavorites}
+                                        toggleFavorite={toggleFavorite}
                                     />
                                 </div>
                             ))}
@@ -77,7 +73,12 @@ not active: px-3 py-1 rounded-full border border-slate-300 hover:bg-slate-100
                     {/* TABLET & DESKTOP: grid */}
                     <div className='mt-6 hidden md:grid gap-6 md:grid-cols-4 lg:grid-cols-4'>
                         {top4.map((movie) => (
-                            <MovieCard key={movie.id} {...movie} />
+                            <MovieCard
+                                key={movie.id}
+                                {...movie}
+                                favorites={favorites}
+                                toggleFavorite={toggleFavorite}
+                            />
                         ))}
                     </div>
                 </section>

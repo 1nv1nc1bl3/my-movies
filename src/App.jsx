@@ -9,6 +9,16 @@ import FavoritesPage from './pages/FavoritesPage';
 function App() {
     const [favorites, setFavorites] = useState([]);
 
+    // Toggle movie state (favorite/not favorite)
+    const toggleFavorite = (movie) => {
+        setFavorites((prev) => {
+            const exists = prev.some((fav) => fav.id === movie.id);
+            return exists
+                ? prev.filter((fav) => fav.id !== movie.id)
+                : [...prev, movie];
+        });
+    };
+
     const router = createBrowserRouter([
         {
             path: '/',
@@ -19,17 +29,27 @@ function App() {
                     element: (
                         <HomePage
                             favorites={favorites}
-                            setFavorites={setFavorites}
+                            toggleFavorite={toggleFavorite}
                         />
                     ),
                 },
                 {
                     path: 'movie/:id',
-                    element: <MovieDetails />,
+                    element: (
+                        <MovieDetails
+                            favorites={favorites}
+                            toggleFavorite={toggleFavorite}
+                        />
+                    ),
                 },
                 {
                     path: 'favorites',
-                    element: <FavoritesPage />,
+                    element: (
+                        <FavoritesPage
+                            favorites={favorites}
+                            toggleFavorite={toggleFavorite}
+                        />
+                    ),
                 },
             ],
         },

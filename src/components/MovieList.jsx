@@ -1,6 +1,6 @@
 import MovieCard from './MovieCard';
 
-const MovieList = ({ movies, favorites, setFavorites }) => {
+const MovieList = ({ movies, favorites, toggleFavorite }) => {
     return (
         <div
             className='
@@ -18,8 +18,8 @@ const MovieList = ({ movies, favorites, setFavorites }) => {
                 <MovieCard
                     key={movie.id}
                     favorites={favorites}
-                    setFavorites={setFavorites}
                     {...movie}
+                    toggleFavorite={toggleFavorite}
                 />
             ))}
         </div>

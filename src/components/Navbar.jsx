@@ -12,7 +12,7 @@ const Navbar = () => {
                 <div className='h-16 flex items-center justify-between'>
                     {/* Logo / Brand */}
                     <NavLink
-                        className='flex items-center gap-2 text-teal-300"'
+                        className='flex items-center gap-2 text-teal-300'
                         to='/'
                     >
                         <span className='sr-only'>Home</span>

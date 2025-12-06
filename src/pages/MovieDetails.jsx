@@ -10,7 +10,7 @@ import Loader from '../components/Loader.jsx';
 
 const KEY = '8f73159d5a230921c187dc2da836f1c6';
 
-const MovieDetails = () => {
+export default function MovieDetails({ toggleFavorite, favorites = [] }) {
     const { id } = useParams();
     const { state } = useLocation();
     const { movie } = state || {};
@@ -50,12 +50,8 @@ const MovieDetails = () => {
         '-';
 
     const videoURL =
-        details?.videos?.results?.find((vid) => vid.type === 'Trailer')?.key ||
-        '-';
-
-    // const actualRuntime = `${Math.floor(details?.runtime / 60)}h ${
-    //     details?.runtime % 60
-    // }m`;
+        details?.videos?.results?.find((vid) => vid.type === 'Trailer')?.key ??
+        null;
 
     const formattedRuntime = (runtime) => {
         if (!runtime) return '';
@@ -91,6 +87,8 @@ const MovieDetails = () => {
         37: 'Western',
     };
     const genreNames = genre_ids.map((gid) => GENRES[gid]).join(' • ');
+
+    const isFavorite = favorites.some((fav) => fav.id === movie.id);
 
     return (
         <>
@@ -181,6 +179,7 @@ const MovieDetails = () => {
                                 </div>
                             </div>
                             {/* RATINGS SECTION */}
+
                             <div className='lg:col-span-1 bg-slate-900 text-slate-100 rounded-2xl p-6 shadow-xl self-start'>
                                 <h3 className='text-xs uppercase tracking-wider text-slate-300'>
                                     TMDB Rating
@@ -213,13 +212,33 @@ const MovieDetails = () => {
                                     Movie ID: {id}
                                 </p>
                             </div>
-                            <p className='text-gray-700 leading-relaxed max-w-prose'></p>
+                            <p className='text-gray-700 leading-relaxed max-w-prose'>
+                                {/* FAVORITES - add them in proper place*/}
+                                {toggleFavorite && (
+                                    <button
+                                        onClick={() => toggleFavorite(movie)}
+                                        className='inline-flex items-center gap-2 rounded-full border border-slate-600/60 px-4 py-1.5 text-sm font-medium text-slate-100 hover:bg-slate-800 transition'
+                                        title={
+                                            isFavorite
+                                                ? 'Remove from favorites'
+                                                : 'Add to favorites'
+                                        }
+                                    >
+                                        <span className='text-lg leading-none'>
+                                            {isFavorite ? '❤️' : '🤍'}
+                                        </span>
+                                        <span>
+                                            {isFavorite
+                                                ? 'In favorites'
+                                                : 'Add to favorites'}
+                                        </span>
+                                    </button>
+                                )}
+                            </p>
                         </div>
                     </div>
                 </>
             )}
         </>
     );
-};
-
-export default MovieDetails;
+}

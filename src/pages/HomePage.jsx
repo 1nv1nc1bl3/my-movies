@@ -9,7 +9,7 @@ import { useMovie } from '../utils/useMovie.js';
 
 const KEY = '8f73159d5a230921c187dc2da836f1c6';
 
-const HomePage = ({ favorites, setFavorites }) => {
+const HomePage = ({ favorites, toggleFavorite }) => {
     const { query, setQuery, error, loading, movies } = useMovie(KEY);
 
     const showLanding = query.trim().length < 3;
@@ -31,7 +31,7 @@ const HomePage = ({ favorites, setFavorites }) => {
                     {/* TRENDING SECTION */}
                     <TrendingSection
                         favorites={favorites}
-                        setFavorites={setFavorites}
+                        toggleFavorite={toggleFavorite}
                     />
                 </>
             ) : (
@@ -42,8 +42,8 @@ const HomePage = ({ favorites, setFavorites }) => {
                     {!loading && !error && (
                         <MovieList
                             favorites={favorites}
-                            setFavorites={setFavorites}
                             movies={movies}
+                            toggleFavorite={toggleFavorite}
                         />
                     )}
                 </section>

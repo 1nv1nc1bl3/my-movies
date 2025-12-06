@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 const KEY = '8f73159d5a230921c187dc2da836f1c6';
 
 export function useTrending(period) {
-    const [trending, setTrending] = useState(null);
+    const [trending, setTrending] = useState([]);
     const [loadingTrending, setLoadingTrending] = useState(false);
     const [errorTrending, setErrorTrending] = useState(false);
 
@@ -41,5 +41,5 @@ export function useTrending(period) {
         };
     }, [period]);
 
-    return { trending, loadingTrending, errorTrending, period };
+    return { trending, loadingTrending, errorTrending };
 }
