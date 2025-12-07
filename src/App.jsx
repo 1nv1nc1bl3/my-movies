@@ -1,13 +1,19 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppLayout from './layouts/AppLayout';
 import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
 import MovieDetails from './pages/MovieDetails';
 import FavoritesPage from './pages/FavoritesPage';
 
-function App() {
-    const [favorites, setFavorites] = useState([]);
+export default function App() {
+    const [favorites, setFavorites] = useState(
+        JSON.parse(localStorage.getItem('favorites')) || []
+    );
+
+    useEffect(() => {
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    }, [favorites]);
 
     // Toggle movie state (favorite/not favorite)
     const toggleFavorite = (movie) => {
@@ -60,4 +66,3 @@ function App() {
     ]);
     return <RouterProvider router={router} />;
 }
-export default App;

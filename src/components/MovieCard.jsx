@@ -35,7 +35,6 @@ export default function MovieCard({
                     <div className='absolute top-2 right-2 bg-yellow-400 text-gray-900 text-sm font-semibold px-2 py-1 rounded-md shadow'>
                         {ratingValue}
                     </div>
-                    {/* Favorites Heart */}
                 </div>
             </Link>
             {/* Text Content */}

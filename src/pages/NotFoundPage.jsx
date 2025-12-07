@@ -20,18 +20,10 @@ const NotFoundPage = () => {
                         >
                             Go back home
                         </Link>
-                        {/* <Link
-                            to='/'
-                            className='text-sm font-semibold text-gray-900'
-                        >
-                            Contact support{' '}
-                            <span aria-hidden='true'>&rarr;</span>
-                        </Link> */}
                     </div>
                 </div>
             </main>
         </>
     );
 };
-
 export default NotFoundPage;

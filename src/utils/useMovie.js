@@ -48,19 +48,3 @@ export function useMovie(KEY) {
 
     return { query, setQuery, error, loading, movies };
 }
-
-// FOR FUTURE USE
-// const fetchGenres = async () => {
-//     try {
-//         const result = await fetch(
-//             'https://api.themoviedb.org/3/genre/movie/list'
-//         );
-//         const genreData = await result.json();
-//         console.log(genreData);
-//     } catch (error) {
-//         console.log('Error fetching genres', error);
-//     }
-// };
-// useEffect(() => {
-//     fetchGenres();
-// }, []);

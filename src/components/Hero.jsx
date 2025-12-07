@@ -5,8 +5,6 @@ const Hero = () => {
         <section
             className='relative min-h-[35rem] sm:min-h-[37rem] md:min-h-[39rem] flex items-center justify-center'
             style={{
-                // backgroundImage:
-                //     'url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp)',
                 backgroundImage: `url(${heroUrl})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center 60%',

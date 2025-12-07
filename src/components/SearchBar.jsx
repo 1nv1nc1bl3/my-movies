@@ -1,7 +1,6 @@
 import { FiSearch } from 'react-icons/fi';
 
 const SearchBar = ({ query, setQuery, variant = 'default' }) => {
-    // ίδιο input, αλλά λίγο διαφορετικό wrapper αν είμαστε μέσα στο Hero
     const wrapperClass =
         variant === 'hero'
             ? 'w-full flex justify-center'

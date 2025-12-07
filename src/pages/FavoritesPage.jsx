@@ -51,7 +51,6 @@ export default function FavoritesPage({ favorites, toggleFavorite }) {
                                 {shortDesc}
                             </p>
                             <button
-                                // continue from here with button logic to remove movie from favorites
                                 onClick={() => toggleFavorite(favorite)}
                                 className='px-4 py-1 rounded-full bg-red-600 text-white text-sm cursor-pointer'
                             >
