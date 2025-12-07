@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
     useParams,
     useNavigate,
@@ -22,6 +23,15 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
     const cast = details?.credits?.cast?.slice(0, 10) ?? []; // 'cast' is an array
     // console.log(cast);
 
+    const myTitle = movie?.title || details?.title;
+    useEffect(() => {
+        if (!movie.title) return;
+        document.title = `${movie.title} | CineMate`;
+        return function () {
+            document.title = 'CineMate';
+        };
+    }, [myTitle]);
+
     if (!movie) return <Navigate to='*' />;
 
     const {
@@ -45,14 +55,17 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
         ? `https://image.tmdb.org/t/p/original${backdrop_path}`
         : '';
 
+    // Search in all crew members for the one with job title 'Director'
     const director =
         details?.credits?.crew?.find((dir) => dir.job === 'Director')?.name ||
         '-';
 
+    // Search in all videos for the one with type 'Trailer'
     const videoURL =
         details?.videos?.results?.find((vid) => vid.type === 'Trailer')?.key ??
         null;
 
+    // Runtime display format
     const formattedRuntime = (runtime) => {
         if (!runtime) return '';
         const hours = Math.floor(runtime / 60);
@@ -62,9 +75,9 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
         if (!minutes) return `${hours}h`;
         return `${hours}h ${minutes}m`;
     };
-
     const actualRuntime = formattedRuntime(details?.runtime);
 
+    // Decode genres from imported data to actual names
     const GENRES = {
         28: 'Action',
         12: 'Adventure',
@@ -88,6 +101,7 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
     };
     const genreNames = genre_ids.map((gid) => GENRES[gid]).join(' • ');
 
+    // Conditional if a movie is in favorites
     const isFavorite = favorites.some((fav) => fav.id === movie.id);
 
     return (
@@ -118,7 +132,7 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
                         </div>
 
                         <div className='grid gap-12 md:grid-cols-2 lg:grid-cols-[300px_minmax(0,1fr)_260px] relative z-10 lg:mt-24'>
-                            {/* POSTER SECTION */}
+                            {/* LEFT : Poster */}
                             <div className='md:col-span-2 lg:col-span-1 flex justify-center lg:block'>
                                 <div
                                     className='relative rounded-2xl overflow-hidden shadow-xl 
@@ -137,7 +151,7 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
                                 </div>
                             </div>
 
-                            {/* OVERVIEW SECTION */}
+                            {/* MIDDLE : Title, Overview & Cast */}
                             <div className='lg:col-span-1 text-black space-y-4'>
                                 <h1 className='flex justify-start items-end gap-3 text-3xl sm:text-4xl font-normal leading-10 mb-1'>
                                     <span>{title}</span>
@@ -178,46 +192,50 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
                                     ))}
                                 </div>
                             </div>
-                            {/* RATINGS SECTION */}
+                            {/* RIGHT : Ratings & Favorites */}
+                            <div className='lg:col-span-1 flex flex-col gap-4 '>
+                                {/* Rating Card */}
+                                <div className='w-full bg-slate-900 text-slate-100 rounded-2xl p-6 shadow-xl'>
+                                    <h3 className='text-xs uppercase tracking-wider text-slate-300'>
+                                        TMDB Rating
+                                    </h3>
 
-                            <div className='lg:col-span-1 bg-slate-900 text-slate-100 rounded-2xl p-6 shadow-xl self-start'>
-                                <h3 className='text-xs uppercase tracking-wider text-slate-300'>
-                                    TMDB Rating
-                                </h3>
+                                    <p className='text-5xl font-bold mt-2'>
+                                        {ratingValue}
+                                    </p>
 
-                                <p className='text-5xl font-bold mt-2'>
-                                    {ratingValue}
-                                </p>
+                                    <p className='text-xs text-slate-300 mt-1'>
+                                        Average user score
+                                    </p>
 
-                                <p className='text-xs text-slate-300 mt-1'>
-                                    Average user score
-                                </p>
+                                    <div className='h-px bg-slate-700/60 mt-6 mb-4' />
 
-                                <div className='h-px bg-slate-700/60 mt-6 mb-4' />
+                                    {videoURL && (
+                                        <div className='mt-2 mb-4'>
+                                            <a
+                                                href={`https://www.youtube.com/watch?v=${videoURL}`}
+                                                target='_blank'
+                                                rel='noreferrer'
+                                                className='inline-flex items-center justify-center rounded-full bg-[#f3143c] hover:bg-[#d91235] px-4 py-1.5 text-sm font-medium text-white transition'
+                                            >
+                                                <span>YouTube Trailer</span>
+                                            </a>
+                                        </div>
+                                    )}
 
-                                {videoURL && (
-                                    <div className='mt-2 mb-4'>
-                                        <a
-                                            href={`https://www.youtube.com/watch?v=${videoURL}`}
-                                            target='_blank'
-                                            rel='noreferrer'
-                                            className='inline-flex items-center justify-center rounded-full bg-[#f3143c] hover:bg-[#d91235] px-4 py-1.5 text-sm font-medium text-white transition'
-                                        >
-                                            <span>YouTube Trailer</span>
-                                        </a>
-                                    </div>
-                                )}
-
-                                <p className='text-xs text-slate-500'>
-                                    Movie ID: {id}
-                                </p>
-                            </div>
-                            <p className='text-gray-700 leading-relaxed max-w-prose'>
-                                {/* FAVORITES - add them in proper place*/}
+                                    <p className='text-xs text-slate-500'>
+                                        Movie ID: {id}
+                                    </p>
+                                </div>
                                 {toggleFavorite && (
                                     <button
                                         onClick={() => toggleFavorite(movie)}
-                                        className='inline-flex items-center gap-2 rounded-full border border-slate-600/60 px-4 py-1.5 text-sm font-medium text-slate-100 hover:bg-slate-800 transition'
+                                        className={`inline-flex items-center justify-start self-start gap-3 px-4 py-2 text-md font-medium rounded-full transition cursor-pointer
+                ${
+                    isFavorite
+                        ? 'text-white border bg-slate-900/85 border-slate-300 '
+                        : 'text-gray-600 border border-slate-300 hover:text-white hover:bg-slate-900/85'
+                }`}
                                         title={
                                             isFavorite
                                                 ? 'Remove from favorites'
@@ -234,7 +252,7 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
                                         </span>
                                     </button>
                                 )}
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </>
