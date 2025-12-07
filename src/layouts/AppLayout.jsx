@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { useEffect } from 'react';
 
 export default function AppLayout() {
+    const location = useLocation();
     useEffect(() => {
         const path = location.pathname;
         if (path.startsWith('/movie/')) return;
