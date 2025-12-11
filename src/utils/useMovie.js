@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 
-export function useMovie(KEY) {
+export function useMovie(KEY, query = '') {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    const [query, setQuery] = useState('');
 
     useEffect(() => {
-        if (query.trim().length < 3) {
+        const trimmed = query.trim();
+
+        if (trimmed.length < 3) {
             setMovies([]);
             setError(false);
             return;
@@ -21,7 +22,7 @@ export function useMovie(KEY) {
                 setError(false);
 
                 const res = await fetch(
-                    `https://api.themoviedb.org/3/search/movie?api_key=${KEY}&query=${query}`,
+                    `https://api.themoviedb.org/3/search/movie?api_key=${KEY}&query=${trimmed}`,
                     { signal: controller.signal }
                 );
                 if (!res.ok) {
@@ -44,7 +45,7 @@ export function useMovie(KEY) {
             clearTimeout(timer);
             controller.abort();
         };
-    }, [query]);
+    }, [KEY, query]);
 
-    return { query, setQuery, error, loading, movies };
+    return { error, loading, movies };
 }
