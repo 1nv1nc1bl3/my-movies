@@ -4,6 +4,7 @@ import {
     useNavigate,
     useLocation,
     Navigate,
+    Link,
 } from 'react-router-dom';
 import { useMovieDetails } from '../utils/useMovieDetails.js';
 import { useFavorites } from '../context/FavoritesContext.jsx';
@@ -16,6 +17,7 @@ export default function MovieDetails() {
     const { favorites, toggleFavorite } = useFavorites();
 
     const { id } = useParams();
+
     const { state } = useLocation();
     const { movie } = state || {};
 
@@ -187,12 +189,13 @@ export default function MovieDetails() {
 
                                 <div className='text-gray-700 mt-2'>
                                     {cast.map((act, index) => (
-                                        <span
+                                        <Link
+                                            to={`/actor/${act.id}`}
                                             className='inline-block rounded-full bg-slate-900/85 px-3 py-1 text-white text-sm mr-2 mb-2'
                                             key={act.cast_id ?? act.id ?? index}
                                         >
                                             {act.name}
-                                        </span>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>
