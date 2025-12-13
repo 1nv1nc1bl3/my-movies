@@ -6,12 +6,15 @@ import {
     Navigate,
 } from 'react-router-dom';
 import { useMovieDetails } from '../utils/useMovieDetails.js';
+import { useFavorites } from '../context/FavoritesContext.jsx';
 import Error from '../components/Error.jsx';
 import Loader from '../components/Loader.jsx';
 
 const KEY = '8f73159d5a230921c187dc2da836f1c6';
 
-export default function MovieDetails({ toggleFavorite, favorites = [] }) {
+export default function MovieDetails() {
+    const { favorites, toggleFavorite } = useFavorites();
+
     const { id } = useParams();
     const { state } = useLocation();
     const { movie } = state || {};
@@ -99,10 +102,11 @@ export default function MovieDetails({ toggleFavorite, favorites = [] }) {
         10752: 'War',
         37: 'Western',
     };
-    const genreNames = genre_ids.map((gid) => GENRES[gid]).join(' • ');
+    const genreNames = genre_ids?.map((gid) => GENRES[gid])?.join(' • ');
 
     // Conditional if a movie is in favorites
-    const isFavorite = favorites.some((fav) => fav.id === movie.id);
+    const isFavorite =
+        favorites?.some((fav) => String(fav.id) === String(movie.id)) ?? false;
 
     return (
         <>

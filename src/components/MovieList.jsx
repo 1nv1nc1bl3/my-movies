@@ -1,6 +1,6 @@
 import MovieCard from './MovieCard';
 
-const MovieList = ({ movies, favorites, toggleFavorite }) => {
+const MovieList = ({ movies }) => {
     return (
         <div
             className='
@@ -15,12 +15,7 @@ const MovieList = ({ movies, favorites, toggleFavorite }) => {
             '
         >
             {movies?.map((movie) => (
-                <MovieCard
-                    key={movie.id}
-                    favorites={favorites}
-                    {...movie}
-                    toggleFavorite={toggleFavorite}
-                />
+                <MovieCard key={movie.id} {...movie} />
             ))}
         </div>
     );

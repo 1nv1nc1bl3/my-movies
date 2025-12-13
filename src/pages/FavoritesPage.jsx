@@ -1,4 +1,9 @@
-export default function FavoritesPage({ favorites, toggleFavorite }) {
+import { useFavorites } from '../context/FavoritesContext';
+import { Link } from 'react-router-dom';
+
+export default function FavoritesPage(movie) {
+    const { favorites, toggleFavorite } = useFavorites();
+    const { id } = movie;
     const emptyFavorites = favorites.length === 0;
 
     return (
@@ -45,6 +50,12 @@ export default function FavoritesPage({ favorites, toggleFavorite }) {
 
                         <div className='flex-1'>
                             <h2 className='text-xl font-semibold mb-2'>
+                                {/* <Link
+                                    to={`/movie/${favorite.id}`}
+                                    state={{ movie }}
+                                >
+                                    {favorite.title}
+                                </Link> */}
                                 {favorite.title}
                             </h2>
                             <p className='max-w-lg text-sm text-slate-700 mb-4'>

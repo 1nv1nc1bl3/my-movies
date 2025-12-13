@@ -1,11 +1,8 @@
+import { useFavorites } from '../context/FavoritesContext';
 import { Link } from 'react-router-dom';
 
-export default function MovieCard({
-    favorites = [],
-
-    toggleFavorite,
-    ...movie
-}) {
+export default function MovieCard({ ...movie }) {
+    const { favorites, toggleFavorite } = useFavorites();
     const { title, release_date, id, vote_average, poster_path } = movie;
     const ratingValue = vote_average?.toFixed(1);
     const year = release_date ? release_date.slice(0, 4) : '—';
@@ -17,12 +14,7 @@ export default function MovieCard({
 
     return (
         <div className='bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition transform hover:scale-[1.02] '>
-            <Link
-                to={`/movie/${id}`}
-                state={{
-                    movie,
-                }}
-            >
+            <Link to={`/movie/${id}`} state={{ movie }}>
                 {/* Poster */}
                 <div className='relative aspect-[2/3] w-full overflow-hidden cursor-pointer'>
                     <img

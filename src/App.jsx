@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { FavoritesProvider } from './context/FavoritesContext';
 import AppLayout from './layouts/AppLayout';
 import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
@@ -22,26 +23,6 @@ export default function App() {
         }
     }
 
-    // initialize state / loadFavorites runs only once on initial render
-    const [favorites, setFavorites] = useState(() => loadFavorites());
-
-    // sync the favorites state to localStorage whenever favorites changes (dependency array)
-    useEffect(() => {
-        // convert the favorites array into a JSON string and store in localStorage
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
-    }, [favorites]);
-
-    // toggle movie state (favorite/not favorite)
-    const toggleFavorite = (movie) => {
-        setFavorites((prev) => {
-            // check if the movie already exists in favorites by id
-            const exists = prev.some((fav) => fav.id === movie.id);
-            return exists
-                ? prev.filter((fav) => fav.id !== movie.id) // remove movie from favorites
-                : [...prev, movie]; // add movie to favorites
-        });
-    };
-
     const router = createBrowserRouter([
         {
             path: '/',
@@ -49,30 +30,15 @@ export default function App() {
             children: [
                 {
                     index: true,
-                    element: (
-                        <HomePage
-                            favorites={favorites}
-                            toggleFavorite={toggleFavorite}
-                        />
-                    ),
+                    element: <HomePage />,
                 },
                 {
                     path: 'movie/:id',
-                    element: (
-                        <MovieDetails
-                            favorites={favorites}
-                            toggleFavorite={toggleFavorite}
-                        />
-                    ),
+                    element: <MovieDetails />,
                 },
                 {
                     path: 'favorites',
-                    element: (
-                        <FavoritesPage
-                            favorites={favorites}
-                            toggleFavorite={toggleFavorite}
-                        />
-                    ),
+                    element: <FavoritesPage />,
                 },
             ],
         },
@@ -81,5 +47,9 @@ export default function App() {
             element: <NotFoundPage />,
         },
     ]);
-    return <RouterProvider router={router} />;
+    return (
+        <FavoritesProvider>
+            <RouterProvider router={router} />
+        </FavoritesProvider>
+    );
 }

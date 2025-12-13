@@ -4,7 +4,7 @@ import MovieCard from './MovieCard';
 import Loader from './Loader';
 import Error from './Error';
 
-const TrendingSection = ({ favorites, toggleFavorite }) => {
+const TrendingSection = () => {
     const [period, setPeriod] = useState('day');
     const { trending, loadingTrending, errorTrending } = useTrending(period);
     const top4 = (trending ?? []).slice(0, 4);
@@ -60,11 +60,7 @@ const TrendingSection = ({ favorites, toggleFavorite }) => {
                                     key={movie.id}
                                     className='min-w-[60%] snap-center'
                                 >
-                                    <MovieCard
-                                        {...movie}
-                                        favorites={favorites}
-                                        toggleFavorite={toggleFavorite}
-                                    />
+                                    <MovieCard {...movie} />
                                 </div>
                             ))}
                         </div>
@@ -73,12 +69,7 @@ const TrendingSection = ({ favorites, toggleFavorite }) => {
                     {/* TABLET & DESKTOP: grid */}
                     <div className='mt-6 hidden md:grid gap-6 md:grid-cols-4 lg:grid-cols-4'>
                         {top4.map((movie) => (
-                            <MovieCard
-                                key={movie.id}
-                                {...movie}
-                                favorites={favorites}
-                                toggleFavorite={toggleFavorite}
-                            />
+                            <MovieCard key={movie.id} {...movie} />
                         ))}
                     </div>
                 </section>
