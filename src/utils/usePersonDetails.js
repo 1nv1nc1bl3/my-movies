@@ -8,8 +8,8 @@ export function usePersonDetails(id) {
     const [error, setError] = useState(true);
 
     useEffect(() => {
-        if (!id) return;
         const controller = new AbortController();
+        if (!id) return;
         const fetchPerson = async () => {
             try {
                 setLoading(true);
@@ -24,7 +24,8 @@ export function usePersonDetails(id) {
                 }
                 const pers = await res.json();
                 setPerson(pers);
-                console.log(pers);
+                // console.log(pers);
+                // console.log('Movies:', pers.combined_credits.cast);
             } catch (err) {
                 if (err.name === 'AbortError') return;
                 console.log('Error fetching actor!', err);
