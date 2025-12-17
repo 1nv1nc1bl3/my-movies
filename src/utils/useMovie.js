@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { tmdbFetch } from './tmdbFetch';
 
-export function useMovie(KEY, query = '') {
+export function useMovie(query = '') {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -21,31 +22,29 @@ export function useMovie(KEY, query = '') {
                 setLoading(true);
                 setError(false);
 
-                const res = await fetch(
-                    `https://api.themoviedb.org/3/search/movie?api_key=${KEY}&query=${trimmed}`,
+                const data = await tmdbFetch(
+                    '/search/movie',
+                    { query: trimmed },
                     { signal: controller.signal }
                 );
-                if (!res.ok) {
-                    setError(true);
-                    return;
-                }
-                const data = await res.json();
 
                 setMovies(data.results || []);
                 // console.log(data.results);
             } catch (err) {
+                if (err.name === 'AbortError') return;
                 console.log('Error fetching movies!', err);
                 setError(true);
             } finally {
                 setLoading(false);
             }
         };
+
         const timer = setTimeout(fetchMovies, 1500);
         return () => {
             clearTimeout(timer);
             controller.abort();
         };
-    }, [KEY, query]);
+    }, [query]);
 
     return { error, loading, movies };
 }

@@ -11,8 +11,6 @@ import { useFavorites } from '../context/FavoritesContext.jsx';
 import Error from '../components/Error.jsx';
 import Loader from '../components/Loader.jsx';
 
-const KEY = '8f73159d5a230921c187dc2da836f1c6';
-
 export default function MovieDetails() {
     const { favorites, toggleFavorite } = useFavorites();
 

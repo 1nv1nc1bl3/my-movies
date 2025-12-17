@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function MovieCard({ ...movie }) {
     const { favorites, toggleFavorite } = useFavorites();
-    const { title, release_date, id, vote_average, poster_path, popularity } =
-        movie;
+    const { title, release_date, id, vote_average, poster_path } = movie;
     const ratingValue = vote_average?.toFixed(1);
     const year = release_date ? release_date.slice(0, 4) : '—';
     const posterURL = poster_path
@@ -34,10 +33,7 @@ export default function MovieCard({ ...movie }) {
             <div className='p-4 space-y-1'>
                 <h3 className='text-lg font-semibold line-clamp-1'>{title}</h3>
                 <p className='text-sm text-gray-500 flex flex-row justify-between items-center'>
-                    <span className='inline-block'>
-                        {year}
-                        {/* {popularity} */}
-                    </span>
+                    <span className='inline-block'>{year}</span>
                     {toggleFavorite && (
                         <button
                             onClick={() => toggleFavorite(movie)}

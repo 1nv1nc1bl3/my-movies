@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-const KEY = '8f73159d5a230921c187dc2da836f1c6';
+import { tmdbFetch } from './tmdbFetch';
 
 export function useTrending(period) {
     const [trending, setTrending] = useState([]);
@@ -13,17 +12,13 @@ export function useTrending(period) {
             try {
                 setLoadingTrending(true);
                 setErrorTrending(false);
-                const res = await fetch(
-                    `https://api.themoviedb.org/3/trending/movie/${period}?api_key=${KEY}`,
-                    {
-                        signal: controller.signal,
-                    }
+
+                const data = await tmdbFetch(
+                    `/trending/movie/${period}`,
+                    {},
+                    { signal: controller.signal }
                 );
-                if (!res.ok) {
-                    setErrorTrending(true);
-                    return;
-                }
-                const data = await res.json();
+
                 setTrending(data.results);
                 // console.log(data.results);
             } catch (error) {

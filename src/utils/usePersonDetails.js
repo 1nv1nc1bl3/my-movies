@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const KEY = '8f73159d5a230921c187dc2da836f1c6';
+import { tmdbFetch } from './tmdbFetch';
 
 export function usePersonDetails(id) {
     const [person, setPerson] = useState(null);
@@ -14,15 +13,13 @@ export function usePersonDetails(id) {
             try {
                 setLoading(true);
                 setError(false);
-                const res = await fetch(
-                    `https://api.themoviedb.org/3/person/${id}?api_key=${KEY}&append_to_response=combined_credits`,
+
+                const pers = await tmdbFetch(
+                    `/person/${id}`,
+                    { append_to_response: 'combined_credits' },
                     { signal: controller.signal }
                 );
-                if (!res.ok) {
-                    setError(true);
-                    return;
-                }
-                const pers = await res.json();
+
                 setPerson(pers);
                 // console.log(pers);
                 // console.log('Movies:', pers.combined_credits.cast);

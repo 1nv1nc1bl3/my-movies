@@ -7,7 +7,7 @@ const Navbar = () => {
         `${linkBase} ${isActive ? 'text-teal-300' : 'text-slate-100'}`;
 
     return (
-        <header className='bg-slate-900 text-white sticky top-0 w-full'>
+        <header className='bg-slate-900 text-white sticky top-0 w-full z-999'>
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
                 <div className='h-16 flex items-center justify-between'>
                     {/* Logo / Brand */}

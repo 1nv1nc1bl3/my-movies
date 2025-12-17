@@ -7,8 +7,6 @@ import Error from '../components/Error';
 import TrendingSection from '../components/TrendingSection.jsx';
 import { useMovie } from '../utils/useMovie.js';
 
-const KEY = '8f73159d5a230921c187dc2da836f1c6';
-
 const HomePage = () => {
     //
 
@@ -18,7 +16,7 @@ const HomePage = () => {
     const query = searchParams.get('q') ?? '';
 
     // fetch movies based on that query
-    const { error, loading, movies } = useMovie(KEY, query);
+    const { error, loading, movies } = useMovie(query);
 
     // update the URL when the user types in the search bar
     const handleSetQuery = (value) => {
@@ -54,7 +52,10 @@ const HomePage = () => {
                 // SEARCH RESULTS
                 <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
                     {loading && <Loader loading={loading} />}
-                    {error && <Error />}
+                    {error && (
+                        <Error message='Couldn’t load movies. Try again.' />
+                    )}
+
                     {!loading && !error && <MovieList movies={movies} />}
                 </section>
             )}

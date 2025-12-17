@@ -7,9 +7,17 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies / build output
 node_modules
 dist
 dist-ssr
+
+# Env files (secrets)
+.env
+.env.*
+!.env.example
+
+# Local-only files
 *.local
 no_use/
 
@@ -23,3 +31,6 @@ no_use/
 *.njsproj
 *.sln
 *.sw?
+
+# Local Netlify folder
+.netlify

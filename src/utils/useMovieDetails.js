@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const KEY = '8f73159d5a230921c187dc2da836f1c6';
+import { tmdbFetch } from './tmdbFetch';
 
 export function useMovieDetails(id) {
     const [details, setDetails] = useState(null);
@@ -16,16 +15,12 @@ export function useMovieDetails(id) {
                 setLoading(true);
                 setError(false);
 
-                const res = await fetch(
-                    `https://api.themoviedb.org/3/movie/${id}?api_key=${KEY}&append_to_response=credits,videos`,
+                const data = await tmdbFetch(
+                    `/movie/${id}`,
+                    { append_to_response: 'credits,videos' },
                     { signal: controller.signal }
                 );
-                if (!res.ok) {
-                    setError(true);
-                    return;
-                }
 
-                const data = await res.json();
                 // console.log('DETAILS', data.credits.cast.slice(0, 6));
                 // console.log('DETAILS', data);
                 // console.log('DIRECTOR', data.credits.director);
